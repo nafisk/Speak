@@ -71,7 +71,21 @@ The full window is a workspace the user opens intentionally. Remember window siz
 
 ## Motion and accessibility
 
+**State changes have visual continuity.** Every user-visible change of UI state must have a deliberate transition that communicates what changed, using supported native animation where available. Treat motion as part of the interaction contract, not optional polish. Preserve the identity and position of the control as its role changes; avoid abrupt replacement of unrelated views. This principle covers meaningful state changes, not a separate animation for every timer tick or streamed character.
+
+| State change | Intended transition |
+| --- | --- |
+| Shortcut → recording | Reveal the compact pill with a gentle fade/expansion; when a visible trigger exists, transition that control into the pill. Bring in the waveform as capture begins. |
+| Recording → transcribing | Settle the waveform and transition its content to processing status within the same pill. |
+| Transcribing → inserted or recovery | Transition to a confirmation or actionable recovery state; success briefly settles before the pill fades away. Errors remain available until resolved or dismissed. |
+| Playing ↔ paused; speed adjustment | Smoothly change the control's icon/state while preserving text and playback position; ease speed changes without restarting audio. |
+| Reader ↔ settings; cancel/dismiss | Use a short, reversible panel transition or exit animation, keeping focus and spatial context predictable. |
+
+Transitions must be interruptible and retarget from the current presentation when state changes quickly. Never queue obsolete animations, delay capture/insertion/cancellation to finish an animation, or show success before it occurs. Keep controls usable during transitions. In Raycast, use host-supported transitions and state feedback rather than promising custom animation its API cannot provide.
+
 Use approximately 100 ms feedback, 150 ms speed easing, 180 ms state transitions, and 220 ms panel transitions. These are starting tokens, not overrides for system-owned animation. Prefer small opacity/position changes, with minimal spring overshoot. No decorative idle pulsing, animated wallpaper, or constant glow. A real recording waveform must reflect microphone energy; a quiet microphone gets a quiet waveform.
+
+For Reduce Motion, replace spatial/morph transitions with a restrained crossfade where appropriate, or immediate explicit state feedback when needed. Accessibility takes precedence over animation; labels and announcements must communicate the same change. The existing HTML study remains unchanged and does not yet demonstrate this full transition contract.
 
 Respect Reduce Motion (remove travel, spring/morph effects, and decorative animation), Reduce Transparency (solid semantic surfaces), and Increase Contrast (stronger separators and system control outlines). These settings are supported by native Liquid Glass; custom elements must be checked too. [Apple Liquid Glass accessibility](https://developer.apple.com/videos/play/wwdc2025/219/).
 
@@ -80,6 +94,8 @@ Use VoiceOver names and values for controls, announce state changes once, and av
 ## Design verification before shipping
 
 Review light/dark appearances, busy/quiet desktop backgrounds, transparency reduction, increased contrast, reduced motion, keyboard-only use, VoiceOver, window resizing, long text, missing permissions, model loading, and insertion recovery. Verify that speed changes preserve audio position and do not stop speech. Test focus restoration with the compact control over common text fields. Native Liquid Glass and the macOS 15 fallback both need direct testing; a preview is not evidence that the production UI passes these checks.
+
+Review each meaningful state transition for continuity, including rapid start/stop/cancel and opening/closing settings mid-playback. Verify that animations can be interrupted, never hold up the underlying action, preserve focus, and have a suitable Reduce Motion alternative.
 
 Next implementation: apply this direction to the minimal SwiftUI shell, settings, and non-activating recording/player control. The visual direction is proposed for review; actual Mac UI code is not added by this design task.
 
