@@ -13,7 +13,7 @@ Local speech-to-text and text-to-speech in a minimal native Mac app, with Raycas
 
 Two local feasibility prototypes are implemented: Parakeet speech-to-text and Kokoro text-to-speech. The native app's design language is proposed; the Mac and Raycast interfaces have not been built yet.
 
-[Design language — Pearl & Iris](docs/design/design-language.md): colors, materials, typography, interaction standards, and accessibility. [Design verification](docs/design/verification.md) records checks and remaining gaps.
+[Design language — Pearl & Tide](docs/design/design-language.md): colors, materials, typography, interaction standards, and accessibility. [Design verification](docs/design/verification.md) records checks and remaining gaps.
 
 The canonical development directory is `/Users/nafiskhan/Developer/Speak`. Keep all Speak source, research, and project documentation here.
 

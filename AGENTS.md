@@ -5,6 +5,7 @@
 - Current phase: local model feasibility prototypes and native app design. Mac and Raycast application implementation has not started.
 - Use a regular plan unless the user explicitly requests gated SDD.
 - A minimal native Swift/SwiftUI Mac companion owns speech functionality. Raycast is the first control integration; Alfred follows later. Design direction and tokens live in `docs/design/`.
+- Dictation is shortcut-first through a small waveform overlay; routine use must not open the main app. Keep the optional reader compact (440 pt target width, 12 pt padding), with dedicated settings. Tide teal replaces the rejected purple accent. Raycast should expose TTS functionality using its supported native controls.
 - Speech inference must run locally. Initial dependency/model downloads are separate from offline runtime operation.
 - Never commit credentials, model weights, personal recordings, or transcripts.
 - Ask before adding dependencies or network-facing behavior unless the user has already authorized that specific scope. Preserve macOS permission boundaries.

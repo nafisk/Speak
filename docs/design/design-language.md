@@ -1,10 +1,10 @@
-# Speak design language — Pearl & Iris
+# Speak design language — Pearl & Tide
 
 Proposed direction, 2026-09-13. This defines the native Mac application's identity and interaction standards; it does not implement the native interface. Canonical values: [tokens.json](tokens.json). The interactive companion preview is `speak-theme.html` in this directory.
 
 ## Character
 
-Quiet, precise, and tactile. Pearl and graphite establish the surface; a cool iris accent identifies the main action and active controls. Depth comes from native materials, spacing, and restrained shadows. Content gets the most visual space. Prefer the system's controls, window behavior, and typography so Speak feels at home on the Mac.
+Quiet, precise, and tactile. Pearl and graphite establish the surface; a cool teal accent identifies the main action and active controls. Depth comes from native materials, spacing, and restrained shadows. Content gets the most visual space. Prefer the system's controls, window behavior, and typography so Speak feels at home on the Mac.
 
 The application is a small native Swift/SwiftUI companion. Raycast and, later, Alfred are control layers that retain their host's design conventions. Do not recreate Speak's window styling inside Raycast. Share names, status language, icons where supported, and the same underlying behavior.
 
@@ -16,13 +16,13 @@ The application is a small native Swift/SwiftUI companion. Raycast and, later, A
 | Content | `#FFFFFF` | `#22232A` | Reading and text input |
 | Primary text | `#1C1D25` | `#F4F4FA` | Main labels and content |
 | Secondary text | `#646572` | `#B6B7C5` | Supporting labels; not faint disabled text |
-| Iris accent | `#5555D9` | `#B0AFFF` | Primary action, active progress, focus |
+| Tide accent | `#006C75` | `#8CDEE5` | Primary action, active progress, focus |
 
-Use the paired `onAccent` color for filled controls: white in light mode, deep indigo `#191934` in dark mode. Do not place white text on the pale dark-mode accent. Tint a small number of functional elements; do not wash every panel with the accent.
+Use the paired `onAccent` color for filled controls: white in light mode, deep teal `#092E32` in dark mode. Do not place white text on the pale dark-mode accent. Tint a small number of functional elements; do not wash every panel with the accent.
 
 Recording is semantic rose (`#C33142` / `#FF8C99`) paired with a microphone/square icon and explicit Recording label. Success and warning have separate green and amber tokens. State must never depend on color alone. Dividers are structural and subtle; essential control outlines use system contrast behavior, not the decorative divider token.
 
-An optional alternative, **Tide**, uses a cool teal accent (`#006C75` / `#8CDEE5`) on the same neutral surfaces. Iris is the recommended default. This is a design alternative, not a proposal for a large theme picker in the MVP.
+**Tide is the default accent.** The user rejected the previous light-purple direction; do not retain Iris as the default or offer it as a design alternative in the MVP.
 
 Hex values describe the brand palette and opaque fallback surfaces. Prefer native semantic foreground/background colors for standard SwiftUI/AppKit controls. Material appearance belongs to the OS, not a fixed RGBA recipe. System appearance is the default; the app must also work in light and dark modes.
 
@@ -36,9 +36,9 @@ The current development Mac is on macOS 15.7.7. Keep macOS 14+ support with an N
 
 ## Type, geometry, and iconography
 
-Use SF Pro through the system font APIs. The palette's intended hierarchy is 22 pt section titles, 17 pt reading text, 13 pt controls/body, and 12 pt supporting labels; 11 pt is the floor. Use regular weight for reading and semibold for hierarchy. Let system controls keep their native sizing. Reading text uses generous line spacing, a comfortable line length, and adjustable size in future settings; never truncate dictated text.
+Use SF Pro through the system font APIs. The palette's intended hierarchy is 14 pt section titles, 16 pt reading text, 13 pt controls/body, and 12 pt supporting labels; 11 pt is the floor. Use regular weight for reading and semibold for hierarchy. Let system controls keep their native sizing. Reading text uses generous line spacing, a comfortable line length, and adjustable size in future settings; never truncate dictated text.
 
-Use a 4 pt spacing foundation with 8/12/16/24/32 pt steps. Keep native window corner radii and traffic lights under system control. Custom fields use roughly 10 pt radii, content groupings 16 pt, and the compact recorder/player a capsule. Avoid rounding every row into a separate card. One subtle separation shadow is enough for floating controls.
+Use a 4 pt spacing foundation with 8/12/16/24/32 pt steps. Keep native window corner radii and traffic lights under system control. Custom fields use roughly 10 pt radii, content groupings 10 pt, and the compact recorder/player a capsule. Avoid rounding every row into a separate card. One subtle separation shadow is enough for floating controls.
 
 Use SF Symbols in the actual app: `waveform`, `mic`, `play.fill`, `pause.fill`, `stop.fill`, `slider.horizontal.3`, and `checkmark` where appropriate. Labels and familiar icons carry meaning. The preview uses approximate icon equivalents, not production assets. A final app icon is a separate design deliverable; do not ship a generic microphone as an unreviewed final brand mark.
 
@@ -48,10 +48,14 @@ Use SF Symbols in the actual app: `waveform`, `mic`, `play.fill`, `pause.fill`, 
 | --- | --- | --- |
 | Menu-bar entry | Open Speak, show current state, stop active work | Native menu/popover; status readable without color |
 | Compact floating control | Recording indicator or playback with live speed | Non-activating presentation; preserve the target field |
-| Main window | Read text, inspect dictation, recovery when insertion is unavailable | Two modes: Read and Dictate; no dashboard/sidebar for the MVP |
+| Main window | Compact text reader and recovery when needed | Reader by default; no routine Dictate screen, hero heading, or sidebar |
 | Settings | Voice, speed preference, formatting, shortcuts, startup | Native grouped controls; permission/model setup lives here when needed |
 
-The full window is a workspace the user opens intentionally. A hotkey should work with the compact control alone. Remember window size and location. Closing the window should not quit an ongoing background session; quitting the app must stop microphone capture and playback.
+The main window is optional for everyday dictation. A global shortcut starts recording directly, shows a small waveform pill near the bottom center of the active screen, and preserves the focused text field. Pressing the same shortcut again stops capture, transcribes, inserts the result, briefly confirms success, and dismisses the pill. Escape cancels without insertion. The waveform reflects microphone energy only while recording. Preparing/transcribing use a truthful status label; idle has no persistent pill.
+
+Target a 440 pt wide reader with 12 pt content padding and approximately 300 pt initial height; permit resizing for longer text. The recording pill starts around 280 × 44 pt, with room to grow for accessibility and localized labels. The reading window has text, voice/status, playback, and live speed controls. A gear opens a dedicated Settings section with a back action. Settings include a configurable shortcut, Plain/Spoken lists formatting, speed memory, appearance, and voice. The preview shortcut is illustrative (Control–Option–Space); production needs a shortcut recorder and conflict validation. No global shortcut is registered by this preview.
+
+The full window is a workspace the user opens intentionally. Remember window size and location. Closing the window should not quit an ongoing background session; quitting the app must stop microphone capture and playback.
 
 ## Interaction contract
 
@@ -78,3 +82,11 @@ Use VoiceOver names and values for controls, announce state changes once, and av
 Review light/dark appearances, busy/quiet desktop backgrounds, transparency reduction, increased contrast, reduced motion, keyboard-only use, VoiceOver, window resizing, long text, missing permissions, model loading, and insertion recovery. Verify that speed changes preserve audio position and do not stop speech. Test focus restoration with the compact control over common text fields. Native Liquid Glass and the macOS 15 fallback both need direct testing; a preview is not evidence that the production UI passes these checks.
 
 Next implementation: apply this direction to the minimal SwiftUI shell, settings, and non-activating recording/player control. The visual direction is proposed for review; actual Mac UI code is not added by this design task.
+
+## Raycast TTS parity
+
+Users can enter text and control playback entirely inside Raycast. The Swift companion owns the session, keeping playback alive when Raycast closes. Both entry points share voice, speed, playback state, pause/resume, and stop behavior. Opening the app should reveal the existing session, not start a second one.
+
+Raycast renders its supported native components, so functional parity does not imply embedding the custom SwiftUI player. Use `Form.TextArea` for text and actions/shortcuts plus supported rate controls for playback; rate changes must update the existing audio session. Its documented form components do not include a custom continuous slider, so exact slider parity remains an implementation constraint. [Raycast UI](https://developers.raycast.com/api-reference/user-interface), [Form API](https://developers.raycast.com/api-reference/user-interface/form).
+
+Revision 2 records the user’s compact-window, shortcut-first dictation, dedicated settings, and non-purple accent preferences. This remains a design revision; native app implementation is the next phase.
