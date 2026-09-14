@@ -23,7 +23,24 @@ The scripts execute the last release build; rebuild after changing Swift files. 
 
 Wait for model setup and grant macOS microphone access to the terminal if requested. Press Enter to start, speak, and press Enter again to stop. The transcript appears in the terminal. Repeat without reloading the model; type `q` between trials to exit. Recording is limited to 120 seconds; after the limit, press Enter to process it.
 
-This captures the default microphone and transcribes after stopping. It does not show partial transcripts, bind a global hotkey, or paste into another app. Wording and punctuation come directly from Parakeet; no LLM rewrite is applied. Names, punctuation, and number formatting still need personal evaluation. Microphone setup/recording has not been tested with the user's voice.
+This captures the default microphone and transcribes after stopping. It does not show partial transcripts, bind a global hotkey, or paste into another app. In default `plain` mode, wording and punctuation come directly from Parakeet; no LLM rewrite is applied. Names, punctuation, and number formatting still need personal evaluation. Microphone setup/recording has not been tested with the user's voice.
+
+### Spoken bullet lists
+
+```sh
+./prototypes/stt.sh --mic --format lists
+```
+
+Say **“Start a list. Buy apples. Next item. Buy bananas. End list.”** The `text` field becomes Markdown bullets:
+
+```text
+- Buy apples.
+- Buy bananas.
+```
+
+Capitalization/punctuation within each item still comes from the recognizer. `raw_text` always contains the unformatted recognition result. These three cue phrases are reserved commands when list mode is enabled, even if quoted; use `--format plain` to dictate them literally. Lists need an end cue. Empty, incomplete, or nested lists are left unchanged. Prose outside a valid list is retained, with blank lines around the bullets.
+
+This is deterministic formatting with no extra model or network call. It does not infer bullet lists from ordinary prose or rewrite what you meant. File benchmarks accept `--format lists` too; `formatting_seconds` reports its cost separately, while total processing time includes formatting.
 
 Or benchmark a file, using an absolute path or one relative to your current directory:
 
@@ -39,7 +56,18 @@ Use 0.25–120 seconds of audible audio. File decoding/resampling happens before
 ./prototypes/tts.sh --interactive
 ```
 
-After setup and one discarded warm-up sentence, type a short sentence and press Enter. Kokoro reads it aloud. Enter more sentences while the model remains loaded; `:quit` exits. Audio stays in memory. Wait until playback finishes before entering the next line. Use Ctrl-C to interrupt playback and exit.
+After setup and one discarded warm-up sentence, type a short sentence and press Enter. Kokoro reads it aloud. Audio stays in memory. You can enter these controls **while it is speaking**:
+
+| Command | Effect |
+| --- | --- |
+| `:speed 1.5` | Change to 1.5× speed; valid range 0.5–2.0× |
+| `:faster` / `:slower` | Increase/decrease by 0.1× |
+| `:stop` | Stop the current utterance |
+| `:quit` | Stop playback and exit |
+
+Each command takes effect after Enter. Speed changes ease over roughly 150 ms on the same player, without seeking, restarting, or resynthesizing the audio. macOS rate adjustment preserves pitch. The selected speed persists for subsequent sentences within this session. An invalid speed leaves playback unchanged. Enter new text after playback finishes, or use `:stop` first. Starting another sentence does not interrupt the previous one automatically.
+
+Set an initial rate with `./prototypes/tts.sh --interactive --speed 1.25`. Changes during synthesis are handled when synthesis returns; changes during playback are handled immediately. The terminal control ramp is not a sample-accurate guarantee against every audible artifact; voice quality at different rates still needs listening feedback.
 
 To save a WAV or benchmark one phrase:
 
@@ -51,7 +79,7 @@ mkdir -p prototypes/output
   --output prototypes/output/my-benchmark.wav --repeat 21
 ```
 
-Output files must not already exist. The first trial's WAV is saved; later trials measure the same phrase without saving copies. `--play` plays every trial, so omit it for timing batches. Text can also be piped into stdin when `--text` is omitted. The prototype uses English `af_heart`, normal speed, and a 300-character input limit. It generates the whole short utterance before playback; it does not yet queue or stream long documents.
+Output files must not already exist. The first trial's WAV is saved; later trials measure the same phrase without saving copies. `--play` plays every trial, so omit it for timing batches. `--speed 1.25` also sets the initial playback rate with `--play`; live terminal commands are available in interactive mode only. Saved WAVs retain the model's normal speed. Text can also be piped into stdin when `--text` is omitted. The prototype uses English `af_heart` and a 300-character input limit. It generates the whole short utterance before playback; it does not yet queue or stream long documents.
 
 ## Read timings correctly
 

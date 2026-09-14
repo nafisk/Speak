@@ -23,7 +23,7 @@ Phase: model feasibility prototypes implemented; Raycast application implementat
 
 Assign Raycast aliases and global hotkeys after checking conflicts. An alias requires opening Raycast; a hotkey launches the command directly. Exact key combinations remain user-configurable.
 
-Proposed defaults: one English voice, adjustable reading speed, no saved transcript history, microphone capture only after explicit command invocation. Retain the latest uninserted result in memory for manual copy if insertion fails. Do not send Enter or submit messages after pasting.
+Proposed defaults: one English voice, adjustable reading speed, no saved transcript history, microphone capture only after explicit command invocation. The user requested speed changes during speech without restarting; the prototype now supports a 0.5–2.0× playback rate with a short ramp. Retain the latest uninserted result in memory for manual copy if insertion fails. Do not send Enter or submit messages after pasting.
 
 Scope exclusions: voice cloning, cloud inference, translation, meeting transcription, diarization, prose rewriting, account systems, Alfred implementation, and standalone application UI beyond the minimal companion/status controls.
 
@@ -50,7 +50,7 @@ Prefer local IPC, such as a user-restricted Unix socket behind a small CLI, over
 
 Insertion needs an early experiment: capture the intended application before Raycast takes focus, restore it appropriately, and insert once. Raycast's Clipboard.paste is the first API to evaluate. If delayed completion requires the companion to own insertion, validate the Accessibility permission and focus behavior there. If the target changes or cannot be safely restored, offer manual copy instead of guessing. Clipboard restoration must not overwrite content the user copied during processing.
 
-Use model-produced punctuation/capitalization plus conservative whitespace cleanup. No third generative model is planned. Recognition errors remain possible; preserving wording is a product intent, not a claim of perfect transcription.
+Use model-produced punctuation/capitalization plus conservative whitespace cleanup. The user also requested list formatting. The prototype provides opt-in spoken list cues (`start a list`, `next item`, `end list`) and retains raw recognition output. Automatic list inference from natural speech remains undecided. No third generative model is planned. Recognition errors remain possible; preserving wording is a product intent, not a claim of perfect transcription.
 
 ## Delivery sequence
 

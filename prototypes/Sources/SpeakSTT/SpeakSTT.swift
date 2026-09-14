@@ -12,17 +12,22 @@ struct SpeakSTT {
 
     @MainActor static func run() async throws {
         let options = try Options(Array(CommandLine.arguments.dropFirst()),
-            valueNames: ["--file", "--repeat"], flagNames: ["--mic", "--help"])
+            valueNames: ["--file", "--repeat", "--format"], flagNames: ["--mic", "--help"])
         if options.flags.contains("--help") {
             print("""
             speak-stt --file AUDIO [--repeat 21]
-            speak-stt --mic
+            speak-stt --mic [--format plain|lists]
             Parakeet v3, local English dictation. Models download on first use.
             --mic keeps models loaded: Enter starts/stops each recording; q exits between trials.
             JSON lines on stdout; status on stderr. First inference is separate from warm trials.
             File input: 0.25–120 seconds. This prototype finalizes after recording; no live partial text.
+            --format lists turns "start a list ... next item ... end list" into Markdown bullets.
+            Formatting is opt-in. text contains the result; raw_text always preserves the recognizer output.
             """)
             return
+        }
+        guard let format = DictationFormat(rawValue: options.values["--format"] ?? "plain") else {
+            throw PrototypeError("--format must be plain or lists.")
         }
         let microphone = options.flags.contains("--mic")
         guard microphone != (options.values["--file"] != nil) else { throw PrototypeError("Choose exactly one of --file or --mic.") }
@@ -68,23 +73,27 @@ struct SpeakSTT {
                 let recorded = try AudioConverter().resampleAudioFile(url)
                 do {
                     try validateAudio(recorded, sampleRate: 16000)
-                    timings.append(try await transcribe(recorded, manager: manager, index: timings.count + 1, start: stopped))
+                    timings.append(try await transcribe(recorded, manager: manager, index: timings.count + 1, start: stopped, format: format))
                 } catch { note("Trial failed: \(error.localizedDescription)") }
                 note("Ready. Enter starts another recording; q quits.")
             }
         } else if let samples {
-            for index in 1...repeats { timings.append(try await transcribe(samples, manager: manager, index: index, start: now())) }
+            for index in 1...repeats { timings.append(try await transcribe(samples, manager: manager, index: index, start: now(), format: format)) }
         }
         try summary(timings)
     }
 
-    static func transcribe(_ samples: [Float], manager: AsrManager, index: Int, start: Double) async throws -> Double {
+    static func transcribe(_ samples: [Float], manager: AsrManager, index: Int, start: Double, format: DictationFormat) async throws -> Double {
         var state = try TdtDecoderState()
         let result = try await manager.transcribe(samples, decoderState: &state)
+        let formattingStart = now()
+        let text = format.apply(to: result.text)
+        let formattingSeconds = now() - formattingStart
         let elapsed = now() - start
         let duration = Double(samples.count) / 16000
         try emit(["event": "transcription", "trial": index, "phase": index == 1 ? "first_inference" : "warm",
-                  "text": result.text, "audio_seconds": duration, "processing_seconds": elapsed,
+                  "text": text, "raw_text": result.text, "format": format.rawValue, "formatting_seconds": formattingSeconds,
+                  "audio_seconds": duration, "processing_seconds": elapsed,
                   "realtime_factor": elapsed / duration])
         return elapsed
     }

@@ -23,5 +23,6 @@ Repository: [nafisk/Speak](https://github.com/nafisk/Speak) (public; building in
 - [Research](docs/research.md): Raycast development and distribution, model candidates, and brief Alfred/native comparisons.
 - [Run the prototypes](prototypes/README.md): build, dictate, listen, and benchmark locally.
 - [Feasibility results](docs/feasibility-results.md): measured latency and remaining gaps.
+- [Formatting and live speed controls](docs/prototype-quality-of-life.md): current behavior and verification.
 
 Confirmed MVP: English; press a shortcut once to record and again to stop; preserve wording with punctuation and capitalization. The proposed stack is a Raycast extension plus a local Swift companion, with Parakeet for dictation and Kokoro for speech synthesis. Model selection remains provisional until measured on the target Mac.
