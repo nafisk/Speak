@@ -1,6 +1,6 @@
 # Speak design language — Pearl & Tide
 
-Proposed direction, 2026-09-13. This defines the native Mac application's identity and interaction standards; it does not implement the native interface. Canonical values: [tokens.json](tokens.json). The interactive companion preview is `speak-theme.html` in this directory.
+Selected direction, 2026-09-13. The user chose Pearl & Tide after comparing it with Paper & Ink. This defines the native Mac application's identity and interaction standards; it does not implement the native interface. Canonical values: [tokens.json](tokens.json). The interactive companion preview is `speak-theme.html` in this directory.
 
 ## Character
 
@@ -97,7 +97,7 @@ Review light/dark appearances, busy/quiet desktop backgrounds, transparency redu
 
 Review each meaningful state transition for continuity, including rapid start/stop/cancel and opening/closing settings mid-playback. Verify that animations can be interrupted, never hold up the underlying action, preserve focus, and have a suitable Reduce Motion alternative.
 
-Next implementation: apply this direction to the minimal SwiftUI shell, settings, and non-activating recording/player control. The visual direction is proposed for review; actual Mac UI code is not added by this design task.
+Next implementation: build the minimal SwiftUI companion and a working shortcut-to-dictation-to-insertion flow with a non-activating waveform control. Apply the selected visual direction and motion contract. Actual Mac UI code is not added by this design task.
 
 ## Raycast TTS parity
 

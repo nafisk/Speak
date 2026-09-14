@@ -1,12 +1,12 @@
 # Speak MVP plan
 
 Date: 2026-09-13 (America/New_York)
-Phase: model feasibility prototypes implemented; Raycast application implementation has not started. See [measured results](feasibility-results.md).
+Phase: model feasibility prototypes implemented; Pearl & Tide design selected. Native app implementation is next, followed by Raycast integration. See [measured results](feasibility-results.md).
 
 ## Confirmed intent
 
 1. Build in `/Users/nafiskhan/Developer/Speak`, with Git and the public `nafisk/Speak` GitHub repository (visibility changed at the user's request).
-2. Make Raycast the primary interface for both local dictation and reading text aloud.
+2. Build a minimal native Swift/SwiftUI Mac companion. Dictation works through a global shortcut and waveform overlay with the main window closed; TTS is available in the compact app and through Raycast controls.
 3. Support English first.
 4. Press the dictation shortcut once to start and again to stop.
 5. Preserve spoken wording, adding punctuation and capitalization. Do not intentionally rewrite, remove fillers, or summarize.
@@ -21,11 +21,19 @@ Phase: model feasibility prototypes implemented; Raycast application implementat
 | Stop Speaking | Stop playback and discard queued synthesis. |
 | Cancel Dictation | Stop recording/processing without inserting text. |
 
-Assign Raycast aliases and global hotkeys after checking conflicts. An alias requires opening Raycast; a hotkey launches the command directly. Exact key combinations remain user-configurable.
+The native companion owns the global dictation shortcut. Add Raycast aliases and commands after the native flow works. An alias requires opening Raycast; a global shortcut should not. Exact key combinations remain user-configurable and need conflict checks.
 
 Proposed defaults: one English voice, adjustable reading speed, no saved transcript history, microphone capture only after explicit command invocation. The user requested speed changes during speech without restarting; the prototype now supports a 0.5–2.0× playback rate with a short ramp. Retain the latest uninserted result in memory for manual copy if insertion fails. Do not send Enter or submit messages after pasting.
 
-Scope exclusions: voice cloning, cloud inference, translation, meeting transcription, diarization, prose rewriting, account systems, Alfred implementation, and standalone application UI beyond the minimal companion/status controls.
+Scope exclusions: voice cloning, cloud inference, translation, meeting transcription, diarization, prose rewriting, account systems, Alfred implementation, and application UI beyond the compact reader, settings, setup/recovery, and floating controls.
+
+## Immediate next milestone: working native dictation
+
+Build the SwiftUI menu-bar companion using the existing local runtime. Connect a configurable toggle shortcut to microphone capture, a non-activating waveform overlay, local transcription, and one insertion into the intended field. Apply Pearl & Tide and the motion contract from the first native UI pass. Include cancellation, permission guidance, and manual-copy recovery.
+
+The milestone is done when the user can dictate into Notes and a browser text field with Speak's main window closed, cancel without insertion, and see truthful listening/processing/completion states. Measure shortcut-to-capture and stop-to-insert latency on the target Mac. Real microphone accuracy and focus/insertion remain unproven by the model benchmarks.
+
+After that, connect the compact reader and settings to Kokoro with pause/resume and live speed controls, then add Raycast TTS commands against the same running session. The earlier delivery estimates below are historical planning ranges; re-estimate during native implementation.
 
 ## Proposed architecture
 
@@ -85,4 +93,4 @@ For each latency case, run at least 20 warm trials, report median/p95, and recor
 - Exact hotkeys and the default English voice can be selected during the working demo.
 - Source is public. Packaged public release, pricing, and the project's open-source license are deferred.
 
-The user authorized two feasibility scripts. FluidAudio 0.15.7 and Parakeet/Kokoro assets have been installed and exercised locally. Next: verify personal microphone accuracy and refine warm-up behavior before implementing the Raycast integration. The original discovery-only setup statements in the research notes are historical.
+The user authorized two feasibility scripts. FluidAudio 0.15.7 and Parakeet/Kokoro assets have been installed and exercised locally. Next: the native dictation milestone above, including personal microphone accuracy and warm-up measurements. The original discovery-only setup statements in the research notes are historical.
