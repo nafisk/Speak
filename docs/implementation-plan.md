@@ -1,6 +1,6 @@
 # Speak implementation tracker
 
-Updated: 2026-09-13. Selected direction: **Pearl & Tide**. The user authorized executing this regular plan; work stays in this repository.
+Updated: 2026-09-14. Selected direction: **Pearl & Tide**. The user authorized executing this regular plan; work stays in this repository.
 
 `[x]` implemented with the stated verification · `[-]` implemented, device validation incomplete · `[ ]` pending. A milestone remains open until its device acceptance checks pass. Evidence: [native MVP results](native-mvp-results.md).
 
@@ -15,7 +15,7 @@ Updated: 2026-09-13. Selected direction: **Pearl & Tide**. The user authorized e
 ## 2. Compact reader and settings — implemented; live validation pending
 
 - [x] Build the 440 pt reader, settings, cached Kokoro synthesis, and bounded long-text passages with one passage prepared ahead.
-- [x] Pause/resume, stop, and smooth 0.5–2× rate changes on the existing player. Muted synthetic playback test verifies continuity and paused position.
+- [-] Pause/resume, stop, and smooth 0.5–2× rate changes on the existing player. Earlier continuity checks passed; the 2026-09-14 real playback retest times out opening the selected output. Audio preparation now runs off the UI thread with timeout/cancellation protection; regression checks pass.
 - [-] Settings for shortcut, list cues, speed memory, appearance, model readiness, and permissions. Initial user permission setup succeeded; remaining settings/appearance checks pending.
 - [ ] Verify real voice playback, passage boundaries, cancellation during synthesis, and reading with the window closed.
 
@@ -24,7 +24,7 @@ Updated: 2026-09-13. Selected direction: **Pearl & Tide**. The user authorized e
 - [x] Add `speakctl` and a same-user Unix socket. Test structured text round-trip, invalid inputs, mode 600, and refusal to overwrite unexpected files.
 - [x] Build Read Text, Read Clipboard, Stop Speaking, and Cancel Dictation. Reader actions include pause/resume, speed, and Open Speak. Native shortcut owns dictation start/stop.
 - [x] TypeScript check and Raycast build pass. Extension installed in local development mode; Read Text form opens and its controller path is configured. Dependency audit reports zero advisories after omitting the optional debugger.
-- [ ] Verify real shared playback and window dismissal after restarting the updated companion. The older running build does not expose the new control endpoint; app automation timed out when trying to reopen it.
+- [-] Restarted companion and verified Raycast can queue real synthesis. Audio output initialization stalled; the app now reports a recoverable timeout. Shared playback controls and window dismissal remain pending a working output-device check.
 
 ## 4. Daily-use validation — next
 
@@ -42,4 +42,6 @@ See [distribution options](distribution.md): the current cross-app Accessibility
 
 ## Current checkpoint
 
-Native and Raycast implementation is reviewable and builds. Fifteen automated tests pass (seven app/core, eight shared prototype). Notes insertion is user-confirmed. Raycast opens its native reader form. The immediate next check is restarting the rebuilt companion and exercising one real TTS passage, pause/resume, and live rate changes from Raycast. Device checks above remain open; model-only benchmarks do not establish full-app latency.
+The 2026-09-14 live test found and fixed a UI freeze during audio-output preparation. Native build and seven app/core tests pass; nine shared tests pass, while the hardware playback test still times out with Scarlett Solo USB selected. The repaired app remains responsive and supports Stop after that error. Dictation preparation cancellation leaves the test field unchanged; actual recording and browser/focus cases remain open.
+
+Next: complete the authorized built-in-speaker comparison, restore Scarlett afterward if it was changed, and finish real playback controls. Automated Sound controls did not complete the switch; manual assistance was requested. See the dated follow-up in [native results](native-mvp-results.md) for exact coverage and limitations.

@@ -195,7 +195,9 @@ import SpeakCore
                     synthesizing = false
                     while paused { try await Task.sleep(for: .milliseconds(40)) }
                     try Task.checkCancellation()
-                    try playback.play(audio); readerStatus = "Reading \(index + 1) of \(chunks.count)"
+                    try await playback.play(audio)
+                    if paused { playback.pause() }
+                    readerStatus = paused ? "Paused" : "Reading \(index + 1) of \(chunks.count)"
                     while playback.isPlaying || paused { try await Task.sleep(for: .milliseconds(40)) }
                     playback.stop()
                 }

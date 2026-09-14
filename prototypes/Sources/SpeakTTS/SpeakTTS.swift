@@ -123,7 +123,7 @@ struct SpeakTTS {
                 let submitted = now()
                 let data = try await manager.synthesize(text: text)
                 let synthesized = now() - submitted
-                try playback.play(data)
+                try await playback.play(data)
                 try emit(["event": "interactive_synthesis", "synthesis_seconds": synthesized,
                           "playback_scheduled_seconds": now() - submitted, "speed": playback.speed])
             } catch { note("Trial failed: \(error.localizedDescription)") }

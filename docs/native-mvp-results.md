@@ -34,3 +34,25 @@ Sampling the older app showed repeated SwiftUI layout work while idle. The timer
 4. Test offline operation after downloads, unexpected exit and recording cleanup, keyboard-only/VoiceOver use, Reduce Motion/Transparency, and macOS 26 materials.
 
 This is a locally installed development MVP. Public distribution, license selection, signing/notarization, installation/update UX, and Alfred remain later work in the [tracker](implementation-plan.md).
+
+## Live test follow-up — 2026-09-14
+
+The user asked for agent-run end-to-end testing. The stale process from the previous day was quit through Activity Monitor; the rebuilt app launched and `speakctl status` returned successfully. Raycast's Read Text form submitted a synthetic, non-personal passage and the companion queued speech.
+
+**A real playback failure was found.** A process stack sample showed the UI thread blocked inside `AVAudioPlayer.prepareToPlay`, waiting on Core Audio device initialization (`AudioDeviceCreateIOProcID`). The selected output was Scarlett Solo USB at 192 kHz. This identifies the blocking call, but does not establish that the device/driver alone is at fault; a built-in-speaker comparison is still pending.
+
+The shared player now prepares audio on a background dispatch worker and awaits it asynchronously, with a five-second timeout. Stop/cancellation resumes the caller immediately, late preparation is discarded, and only one blocked preparation may exist per player. Session identity prevents an old cancellation from affecting a newer request. Both native and prototype callers use the asynchronous API. Pause is reapplied if requested while preparation was underway. The rate ramp and existing-player pause/resume logic remain unchanged. Playback start/resume/stop after successful preparation still use the main actor; this fix specifically addresses the observed preparation hang.
+
+| Follow-up check | Result |
+| --- | --- |
+| Native release build | Passed. |
+| App/core regression suite | 7 passed. |
+| Shared suite without hardware opt-in | 9 passed, 1 hardware test skipped. New cases cover blocked preparation timeout and cancellation/late completion. |
+| Shared suite with `SPEAK_AUDIO_TESTS=1` | 9 passed; the real muted playback test failed with the five-second output timeout. It no longer blocks the test/UI indefinitely. |
+| Repaired companion, real synthesis request | Returned a readable output-timeout error; status and Stop continued responding. |
+| Dictation command then cancellation | `preparing → idle`; disposable TextEdit contents unchanged by dictation. Recording/transcription were not reached, so this is preparation cancellation coverage only. |
+| Global shortcut via automation | Not verified: the generated key sequence inserted a space in TextEdit instead of starting capture. This does not invalidate the earlier user-confirmed Notes shortcut result. |
+| Browser insertion | Not run: the browser tool blocked the local test-page URL. No alternate browser route was attempted. |
+| Built-in-speaker comparison | User authorized a temporary switch and restoration. Automated Sound controls did not complete the switch; read-only device inspection still showed Scarlett selected. Manual switch requested. |
+
+The synthetic TextEdit edits were undone and that test document closed. No personal recording or transcript was committed. Speak was quit after the test to release the stalled audio connection. Full recording, browser/focus recovery, audible rate changes, passage continuity, and playback with windows closed remain open. Do not treat the earlier successful model/prototype measurements as a pass for today's hardware configuration.

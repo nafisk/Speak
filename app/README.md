@@ -21,7 +21,7 @@ Provision models using the [prototype setup](../prototypes/README.md) first. The
 - In a text field, press Control–Option–Space, speak, then press it again. Escape cancels. Settings also offers Control–Shift–Space.
 - The nonactivating waveform shows input levels. Recording is capped at 120 seconds. The main window can remain closed.
 - Text inserts only if the original application, focused field, contents, and selection still match. Unsupported or changed fields show recovery with an explicit Copy action. Password fields are excluded.
-- In the reader, enter up to 20,000 characters and choose Listen. Pause/resume and the 0.5–2× speed slider control the current audio. Longer text is split into bounded passages; one passage is prepared ahead. Closing the window leaves the menu-bar app running. Quit Speak stops it.
+- In the reader, enter up to 20,000 characters and choose Listen. Pause/resume and the 0.5–2× speed slider control the current audio. Audio preparation has a five-second timeout; if an output device stalls, Speak reports an error and keeps its controls responsive. Check the output device before retrying; a still-blocked device call prevents additional preparations until it returns or Speak restarts. Longer text is split into bounded passages; one passage is prepared ahead. Closing the window leaves the menu-bar app running. Quit Speak stops it.
 
 Settings include explicit spoken list cues, two shortcut presets, speed memory, appearance, model readiness, and permission actions. List cues preserve wording and use “start a list”, “next item”, and “end list”; semantic list detection is not implemented.
 

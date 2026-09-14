@@ -25,7 +25,7 @@ import Testing
     do { let file = try AVAudioFile(forWriting: url, settings: format.settings); try file.write(from: buffer) }
     let playback = try SpeechPlayback()
     defer { playback.stop() }
-    try playback.play(Data(contentsOf: url), volume: 0)
+    try await playback.play(Data(contentsOf: url), volume: 0)
     try await Task.sleep(for: .milliseconds(200))
     var position = playback.position
     for target: Float in [2, 0.5, 1.5] {
@@ -60,4 +60,36 @@ import Testing
     playback.stop()
     #expect(!playback.isPlaying)
     #expect(playback.speed == 1.25)
+}
+
+@Test @MainActor func blockedAudioPreparationTimesOutAndCanBeStopped() async throws {
+    let playback = SpeechPlayback(preparationTimeout: .milliseconds(50)) { _ in
+        Thread.sleep(forTimeInterval: 0.3)
+        throw PrototypeError("Simulated unavailable output")
+    }
+    let started = ContinuousClock.now
+    do { try await playback.play(Data()); Issue.record("Expected timeout") }
+    catch { #expect(error.localizedDescription.contains("timed out")) }
+    #expect(started.duration(to: .now) < .milliseconds(250))
+    playback.stop()
+    #expect(!playback.isPlaying)
+    // Reject additional work while the original device call remains blocked.
+    do { try await playback.play(Data()); Issue.record("Expected busy output") }
+    catch { #expect(error.localizedDescription.contains("still unavailable")) }
+    try await Task.sleep(for: .milliseconds(350))
+    #expect(!playback.isPlaying) // A late worker completion cannot start sound.
+}
+
+@Test @MainActor func stoppingAudioPreparationDiscardsItsCompletion() async throws {
+    let playback = SpeechPlayback(preparationTimeout: .seconds(1)) { _ in
+        Thread.sleep(forTimeInterval: 0.15)
+        throw PrototypeError("Simulated late completion")
+    }
+    let work = Task { try await playback.play(Data()) }
+    try await Task.sleep(for: .milliseconds(25))
+    playback.stop()
+    do { try await work.value; Issue.record("Expected cancellation") }
+    catch { #expect(error is CancellationError) }
+    try await Task.sleep(for: .milliseconds(200))
+    #expect(!playback.isPlaying)
 }
