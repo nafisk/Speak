@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>dev.speak.stt-prototype</string>
+<key>CFBundleName</key><string>Speak STT Prototype</string>
+<key>NSMicrophoneUsageDescription</key><string>Record speech for local transcription when you start a microphone trial.</string>
+</dict></plist>

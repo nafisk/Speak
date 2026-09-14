@@ -18,8 +18,12 @@ transcripts/
 *.wav
 *.mp3
 *.m4a
+*.aiff
+*.caf
+*.flac
 *.safetensors
 *.onnx
 *.gguf
 *.ggml
 *.log
+prototypes/output/

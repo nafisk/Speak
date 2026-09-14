@@ -1,11 +1,11 @@
 # Speak MVP plan
 
 Date: 2026-09-13 (America/New_York)
-Phase: discovery complete; implementation has not started.
+Phase: model feasibility prototypes implemented; Raycast application implementation has not started. See [measured results](feasibility-results.md).
 
 ## Confirmed intent
 
-1. Build in `/Users/nafiskhan/Developer/Speak`, with Git and the private `nafisk/Speak` GitHub repository.
+1. Build in `/Users/nafiskhan/Developer/Speak`, with Git and the public `nafisk/Speak` GitHub repository (visibility changed at the user's request).
 2. Make Raycast the primary interface for both local dictation and reading text aloud.
 3. Support English first.
 4. Press the dictation shortcut once to start and again to stop.
@@ -83,6 +83,6 @@ For each latency case, run at least 20 warm trials, report median/p95, and recor
 
 - Final model/runtime versions depend on measured speed, accuracy, voice quality, and build compatibility.
 - Exact hotkeys and the default English voice can be selected during the working demo.
-- Assume personal use first; public release, pricing, and the project's open-source license are deferred.
+- Source is public. Packaged public release, pricing, and the project's open-source license are deferred.
 
-Next implementation step: milestone 1 feasibility prototype. Dependency/model downloads require a concrete package/model list before installation under the project's existing security guidance. No dependencies, microphone access, or application installation were performed during discovery.
+The user authorized two feasibility scripts. FluidAudio 0.15.7 and Parakeet/Kokoro assets have been installed and exercised locally. Next: verify personal microphone accuracy and refine warm-up behavior before implementing the Raycast integration. The original discovery-only setup statements in the research notes are historical.
