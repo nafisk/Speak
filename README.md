@@ -11,7 +11,9 @@ Local speech-to-text and text-to-speech in a minimal native Mac app, with Raycas
 
 ## Status
 
-Two local feasibility prototypes are implemented: Parakeet speech-to-text and Kokoro text-to-speech. The native app's design language is proposed; the Mac and Raycast interfaces have not been built yet.
+The native Mac companion and Raycast development extension are implemented. The user confirmed shortcut dictation inserts correctly into Notes. Reader and integration validation is underway; this is a development MVP, not a packaged public release.
+
+[Implementation tracker](docs/implementation-plan.md) · [Run the Mac app](app/README.md) · [Run the Raycast extension](raycast/README.md) · [Verification evidence](docs/native-mvp-results.md)
 
 [Design language — Pearl & Tide](docs/design/design-language.md): colors, materials, typography, interaction standards, and accessibility. [Design verification](docs/design/verification.md) records checks and remaining gaps.
 

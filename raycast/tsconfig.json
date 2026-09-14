@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2023"], "target": "ES2023", "module": "commonjs", "jsx": "react-jsx",
+    "strict": true, "esModuleInterop": true, "moduleResolution": "node", "skipLibCheck": true,
+    "resolveJsonModule": true, "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

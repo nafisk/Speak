@@ -27,3 +27,4 @@ transcripts/
 *.ggml
 *.log
 prototypes/output/
+raycast/raycast-env.d.ts

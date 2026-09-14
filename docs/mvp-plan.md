@@ -1,7 +1,7 @@
 # Speak MVP plan
 
 Date: 2026-09-13 (America/New_York)
-Phase: model feasibility prototypes implemented; Pearl & Tide design selected. Native app implementation is next, followed by Raycast integration. See [measured results](feasibility-results.md).
+Phase: native Mac companion and Raycast development extension implemented; device validation underway. See the current [implementation tracker](implementation-plan.md), [native results](native-mvp-results.md), and earlier [model measurements](feasibility-results.md). The proposal and effort ranges below record the original planning context.
 
 ## Confirmed intent
 
@@ -54,9 +54,9 @@ Recommendation: evaluate FluidAudio first because it supports both model familie
 
 Keep the companion running while Speak is active so commands do not reload weights each time. Measure memory with both models loaded; permit idle unloading if necessary. Recording and playback must survive closing Raycast. Serialize dictation sessions and cancel stale results so repeated shortcuts cannot cause duplicate inserts. Stop speech playback when recording starts to avoid transcribing Speak's own audio.
 
-Prefer local IPC, such as a user-restricted Unix socket behind a small CLI, over an HTTP listener. Final transport and paste ownership are feasibility decisions. Pass text through structured input/stdin, never interpolate dictated text into shell code. Keep implementation and build outputs in Speak; normal macOS installation and model-cache destinations should be documented when introduced.
+Prefer local IPC, such as a user-restricted Unix socket behind a small CLI, over an HTTP listener. Implemented transport: same-user Unix socket via `speakctl`; the native companion owns insertion. Pass text through structured input/stdin, never interpolate dictated text into shell code. Keep implementation and build outputs in Speak; normal macOS installation and model-cache destinations should be documented when introduced.
 
-Insertion needs an early experiment: capture the intended application before Raycast takes focus, restore it appropriately, and insert once. Raycast's Clipboard.paste is the first API to evaluate. If delayed completion requires the companion to own insertion, validate the Accessibility permission and focus behavior there. If the target changes or cannot be safely restored, offer manual copy instead of guessing. Clipboard restoration must not overwrite content the user copied during processing.
+The native shortcut captures the intended field directly, before showing a nonactivating overlay. Completion uses Accessibility selected-text replacement only when the same application, field, value, and selection remain. Otherwise, offer manual copy. Automatic insertion does not alter the clipboard. Notes insertion is user-confirmed; browser and changed-focus cases remain pending.
 
 Use model-produced punctuation/capitalization plus conservative whitespace cleanup. The user also requested list formatting. The prototype provides opt-in spoken list cues (`start a list`, `next item`, `end list`) and retains raw recognition output. Automatic list inference from natural speech remains undecided. No third generative model is planned. Recognition errors remain possible; preserving wording is a product intent, not a claim of perfect transcription.
 
@@ -93,4 +93,4 @@ For each latency case, run at least 20 warm trials, report median/p95, and recor
 - Exact hotkeys and the default English voice can be selected during the working demo.
 - Source is public. Packaged public release, pricing, and the project's open-source license are deferred.
 
-The user authorized two feasibility scripts. FluidAudio 0.15.7 and Parakeet/Kokoro assets have been installed and exercised locally. Next: the native dictation milestone above, including personal microphone accuracy and warm-up measurements. The original discovery-only setup statements in the research notes are historical.
+The user authorized two feasibility scripts. FluidAudio 0.15.7 and Parakeet/Kokoro assets have been installed and exercised locally. Native and Raycast implementation was subsequently authorized and built. Next: the remaining device checks in the implementation tracker, including personal microphone accuracy and end-to-end measurements. The original discovery-only setup statements in the research notes are historical.

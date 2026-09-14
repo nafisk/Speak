@@ -8,6 +8,7 @@ let package = Package(
     name: "SpeakPrototypes",
     platforms: [.macOS(.v14)],
     products: [
+        .library(name: "PrototypeSupport", targets: ["PrototypeSupport"]),
         .executable(name: "speak-stt", targets: ["SpeakSTT"]),
         .executable(name: "speak-tts", targets: ["SpeakTTS"]),
     ],

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "speak-local",
+  "title": "Speak",
+  "description": "Local dictation and text-to-speech through the Speak Mac companion.",
+  "icon": "icon.png",
+  "author": "nafisk",
+  "platforms": [
+    "macOS"
+  ],
+  "categories": [
+    "Productivity"
+  ],
+  "preferences": [
+    {
+      "name": "controlPath",
+      "title": "Speak Control Path",
+      "description": "Absolute path to the built app/.build/release/speakctl executable.",
+      "type": "textfield",
+      "required": true
+    }
+  ],
+  "commands": [
+    {
+      "name": "read-text",
+      "title": "Read Text",
+      "description": "Enter text and control local speech playback.",
+      "mode": "view"
+    },
+    {
+      "name": "read-clipboard",
+      "title": "Read Clipboard",
+      "description": "Read copied text locally.",
+      "mode": "no-view"
+    },
+    {
+      "name": "stop-speaking",
+      "title": "Stop Speaking",
+      "description": "Stop Speak's current playback.",
+      "mode": "no-view"
+    },
+    {
+      "name": "cancel-dictation",
+      "title": "Cancel Dictation",
+      "description": "Cancel recording or processing without insertion.",
+      "mode": "no-view"
+    }
+  ],
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@raycast/api": "2.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.17",
+    "@types/react": "19.0.10",
+    "typescript": "5.9.3"
+  }
+}

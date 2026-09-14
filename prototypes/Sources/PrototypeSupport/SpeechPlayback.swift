@@ -9,6 +9,7 @@ import Foundation
     public var isPlaying: Bool { player?.isPlaying ?? false }
     public var position: TimeInterval { player?.currentTime ?? 0 }
     public var currentRate: Float { player?.rate ?? speed }
+    public var duration: TimeInterval { player?.duration ?? 0 }
 
     public init(speed: Float = 1) throws {
         try Self.validate(speed)
@@ -58,5 +59,17 @@ import Foundation
         ramp = nil
         player?.stop()
         player = nil
+    }
+
+    public func pause() {
+        ramp?.cancel()
+        ramp = nil
+        player?.pause()
+    }
+
+    public func resume() throws {
+        guard let player else { throw PrototypeError("There is no speech to resume.") }
+        player.rate = speed
+        guard player.play() else { throw PrototypeError("Audio playback could not resume.") }
     }
 }
