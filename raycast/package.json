@@ -25,7 +25,25 @@
       "name": "read-text",
       "title": "Read Text",
       "description": "Enter text and control local speech playback.",
-      "mode": "view"
+      "mode": "view",
+      "keywords": [
+        "tts",
+        "text to speech",
+        "read aloud",
+        "speak"
+      ]
+    },
+    {
+      "name": "open-dictation",
+      "title": "Open Speak Dictation",
+      "description": "Open Speak for speech-to-text setup. Use the global dictation shortcut in your target text field.",
+      "mode": "no-view",
+      "keywords": [
+        "stt",
+        "speech to text",
+        "dictate",
+        "transcribe"
+      ]
     },
     {
       "name": "read-clipboard",

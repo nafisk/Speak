@@ -35,6 +35,8 @@ Updated: 2026-09-13. Selected direction: **Pearl & Tide**. The user authorized e
 
 ## 5. Public distribution — later
 
+See [distribution options](distribution.md): the current cross-app Accessibility insertion requires resolving Mac App Store sandbox compatibility; Developer ID distribution is the recommended first route.
+
 - [ ] Decide source license and model notices; prepare signing/notarization, install/update flow, and Raycast Store publication.
 - [ ] Add Alfred after native/Raycast daily-use acceptance.
 

@@ -13,7 +13,7 @@ npm run dev --prefix raycast
 
 Run **Speak → Read Text** in Raycast. Set **Speak Control Path** to the absolute path of `app/.build/release/speakctl` in your checkout. On the current development Mac this is `/Users/nafiskhan/Developer/Speak/app/.build/release/speakctl`. Press Command–Return to save the setup form.
 
-Read Text provides a text box, shared playback status, a live speed selector, and actions for Listen, Pause/Resume, Stop, Faster, Slower, and Open Speak. Read Clipboard, Stop Speaking, and Cancel Dictation also run as standalone commands. Configure aliases/hotkeys in Raycast's extension preferences.
+Read Text provides a text box, shared playback status, a live speed selector, and actions for Listen, Pause/Resume, Stop, Faster, Slower, and Open Speak. Read Clipboard, Stop Speaking, and Cancel Dictation also run as standalone commands. Search keywords include `tts` for Read Text and `stt` for Open Speak Dictation. The latter opens the running companion; recording starts with your global shortcut in the intended field. Configure aliases/hotkeys in Raycast's extension preferences. On the development Mac, exact aliases `tts` and `stt` are configured and verified as the first search result for each query. Aliases are personal Raycast settings; manifest keywords travel with the extension.
 
 Use the companion's global Control–Option–Space shortcut to start/stop dictation directly in your target field. The extension intentionally does not start dictation while Raycast owns keyboard focus.
 
