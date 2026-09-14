@@ -4,9 +4,10 @@ from pathlib import Path
 import json
 import re
 import subprocess
+import sys
 
 root = Path(__file__).resolve().parents[1]
-source = (root / 'speak-theme.html').read_text()
+source = (root / (sys.argv[1] if len(sys.argv) > 1 else 'speak-theme.html')).read_text()
 
 class Markup(HTMLParser):
     def __init__(self):
@@ -30,7 +31,7 @@ def luminance(value):
     return sum(weight * (c / 12.92 if c <= .04045 else ((c + .055) / 1.055) ** 2.4)
                for weight, c in zip((.2126, .7152, .0722), channels))
 
-tokens = json.loads((root / 'tokens.json').read_text())
+tokens = json.loads((root / (sys.argv[2] if len(sys.argv) > 2 else 'tokens.json')).read_text())
 for mode in ('light', 'dark'):
     colors = {key: value[mode] for key, value in tokens['colors'].items()}
     for foreground, background in [('textPrimary', 'content'), ('textSecondary', 'content'),

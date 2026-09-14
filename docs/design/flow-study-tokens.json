@@ -1,0 +1,128 @@
+{
+  "name": "Speak — Paper & Ink",
+  "status": "comparison study; not adopted",
+  "version": 1,
+  "colors": {
+    "window": {
+      "light": "#F5F4F0",
+      "dark": "#23221F"
+    },
+    "content": {
+      "light": "#FCFCFB",
+      "dark": "#2C2B27"
+    },
+    "chromeFallback": {
+      "light": "#EEEBE3",
+      "dark": "#35342F"
+    },
+    "textPrimary": {
+      "light": "#1A1A1A",
+      "dark": "#F5F4F0"
+    },
+    "textSecondary": {
+      "light": "#65625C",
+      "dark": "#C0BDB3"
+    },
+    "accent": {
+      "light": "#1A1A1A",
+      "dark": "#EEEBE3"
+    },
+    "onAccent": {
+      "light": "#FCFCFB",
+      "dark": "#1A1A1A"
+    },
+    "accentSubtle": {
+      "light": "#EEEBE3",
+      "dark": "#35342F"
+    },
+    "divider": {
+      "light": "#E0DDD5",
+      "dark": "#55524A"
+    },
+    "recording": {
+      "light": "#C33142",
+      "dark": "#FF8C99"
+    },
+    "success": {
+      "light": "#216E4A",
+      "dark": "#83D6A7"
+    },
+    "warning": {
+      "light": "#855E00",
+      "dark": "#EBC56B"
+    }
+  },
+  "spacingPoints": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32
+  ],
+  "cornerRadiusPoints": {
+    "field": 10,
+    "contentPanel": 10,
+    "previewWindow": 16,
+    "floatingControl": "capsule"
+  },
+  "typography": {
+    "family": "SF Pro / system",
+    "windowTitle": {
+      "points": 13,
+      "weight": "semibold"
+    },
+    "sectionTitle": {
+      "points": 14,
+      "weight": "semibold"
+    },
+    "body": {
+      "points": 13,
+      "weight": "regular"
+    },
+    "reading": {
+      "points": 15,
+      "weight": "regular",
+      "lineHeight": 1.55
+    },
+    "secondary": {
+      "points": 12,
+      "weight": "regular"
+    },
+    "minimum": 11,
+    "editorialHeading": {
+      "family": "Georgia / serif",
+      "points": 26,
+      "weight": "regular"
+    }
+  },
+  "motionMilliseconds": {
+    "feedback": 100,
+    "speedRamp": 150,
+    "stateChange": 180,
+    "panelTransition": 220
+  },
+  "playbackRate": {
+    "minimum": 0.5,
+    "maximum": 2,
+    "step": 0.1
+  },
+  "materials": {
+    "macOS26Plus": "Original native implementation remains undecided; study uses opaque paper surfaces and dark capsule.",
+    "macOS14And15": "Native NSVisualEffectView or SwiftUI material for chrome; opaque readable content",
+    "reduceTransparency": "Opaque semantic surfaces",
+    "content": "No Liquid Glass behind text content"
+  },
+  "windowPoints": {
+    "defaultWidth": 440,
+    "minimumWidth": 320,
+    "contentPadding": 12,
+    "dictationOverlayHeight": 44,
+    "dictationOverlayApproximateWidth": 280
+  },
+  "provenance": {
+    "light": "Neutral surfaces sampled from official Wispr Flow media-kit screenshots; secondary text is Speak choice.",
+    "dark": "Original Speak interpretation; not a verified Wispr Flow palette.",
+    "type": "System sans with Georgia serif fallback; not an identified proprietary font."
+  }
+}

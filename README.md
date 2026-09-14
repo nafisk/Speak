@@ -15,6 +15,8 @@ Two local feasibility prototypes are implemented: Parakeet speech-to-text and Ko
 
 [Design language — Pearl & Tide](docs/design/design-language.md): colors, materials, typography, interaction standards, and accessibility. [Design verification](docs/design/verification.md) records checks and remaining gaps.
 
+[Wispr Flow audit and Paper & Ink alternative](docs/design/wispr-flow-audit.md): public-source design review and a separate comparison concept; Pearl & Tide remains the current direction.
+
 The canonical development directory is `/Users/nafiskhan/Developer/Speak`. Keep all Speak source, research, and project documentation here.
 
 Repository: [nafisk/Speak](https://github.com/nafisk/Speak) (public; building in public).
