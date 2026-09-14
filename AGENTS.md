@@ -2,9 +2,9 @@
 
 - Canonical project root: `/Users/nafiskhan/Developer/Speak`. Keep project source and documentation here. Do not use sibling projects as implementation workspaces.
 - Use Git for versioning and keep commits scoped. Inspect changes before editing; do not overwrite user work.
-- Current phase: local model feasibility prototypes. Raycast application implementation has not started.
+- Current phase: local model feasibility prototypes and native app design. Mac and Raycast application implementation has not started.
 - Use a regular plan unless the user explicitly requests gated SDD.
-- Raycast is the primary interface. Alfred and a standalone Mac interface are secondary possibilities.
+- A minimal native Swift/SwiftUI Mac companion owns speech functionality. Raycast is the first control integration; Alfred follows later. Design direction and tokens live in `docs/design/`.
 - Speech inference must run locally. Initial dependency/model downloads are separate from offline runtime operation.
 - Never commit credentials, model weights, personal recordings, or transcripts.
 - Ask before adding dependencies or network-facing behavior unless the user has already authorized that specific scope. Preserve macOS permission boundaries.

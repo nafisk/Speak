@@ -1,6 +1,6 @@
 # Speak
 
-Local speech-to-text and text-to-speech for macOS, with Raycast as the primary interface.
+Local speech-to-text and text-to-speech in a minimal native Mac app, with Raycast and later Alfred as control layers.
 
 ## Product intent
 
@@ -11,7 +11,9 @@ Local speech-to-text and text-to-speech for macOS, with Raycast as the primary i
 
 ## Status
 
-Two local feasibility prototypes are implemented: Parakeet speech-to-text and Kokoro text-to-speech. The Raycast interface has not been built yet.
+Two local feasibility prototypes are implemented: Parakeet speech-to-text and Kokoro text-to-speech. The native app's design language is proposed; the Mac and Raycast interfaces have not been built yet.
+
+[Design language — Pearl & Iris](docs/design/design-language.md): colors, materials, typography, interaction standards, and accessibility. [Design verification](docs/design/verification.md) records checks and remaining gaps.
 
 The canonical development directory is `/Users/nafiskhan/Developer/Speak`. Keep all Speak source, research, and project documentation here.
 
@@ -25,4 +27,4 @@ Repository: [nafisk/Speak](https://github.com/nafisk/Speak) (public; building in
 - [Feasibility results](docs/feasibility-results.md): measured latency and remaining gaps.
 - [Formatting and live speed controls](docs/prototype-quality-of-life.md): current behavior and verification.
 
-Confirmed MVP: English; press a shortcut once to record and again to stop; preserve wording with punctuation and capitalization. The proposed stack is a Raycast extension plus a local Swift companion, with Parakeet for dictation and Kokoro for speech synthesis. Model selection remains provisional until measured on the target Mac.
+Confirmed MVP: English; press a shortcut once to record and again to stop; preserve wording with punctuation and capitalization. The chosen architecture is a native Swift/SwiftUI companion with a Raycast control extension, using Parakeet for dictation and Kokoro for speech synthesis. Local latency measurements are recorded in the feasibility results; real microphone accuracy and perceived quality still need user validation.
